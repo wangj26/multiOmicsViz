@@ -1,0 +1,1 @@
+multiOmicsViz can plot the effect of one omics data on other omics data along the chromosome.

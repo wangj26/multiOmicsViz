@@ -1,0 +1,132 @@
+%\VignetteIndexEntry{multiOmicsViz}
+%\VignetteKeywords{multiple omics data, effect, heat map, correlation}
+%\VignettePackage{multiOmicsViz}
+
+
+\documentclass[a4paper, oneside, 10pt]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[pdftex]{graphicx}
+\usepackage{calc}
+\usepackage{sectsty}
+\usepackage{caption}
+\usepackage{underscore}
+
+\renewcommand{\captionfont}{\it\sffamily}
+\renewcommand{\captionlabelfont}{\bf\sffamily}
+\allsectionsfont{\sffamily}
+
+% page style %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[a4paper, left=25mm, right=20mm, top=20mm, bottom=25mm, nohead]{geometry}
+\setlength{\parskip}{1.5ex}
+\setlength{\parindent}{0cm}
+\pagestyle{empty}
+
+\usepackage{hyperref}
+\hypersetup{%
+unicode=true, 
+CJKbookmarks=true, 
+bookmarksnumbered=true,
+bookmarksopen=true, 
+bookmarksopenlevel=1, 
+breaklinks=true,
+colorlinks=false, 
+plainpages=false, 
+pdfpagelabels, 
+pdfborder=0 0 0 }
+\urlstyle{same}
+
+\begin{document}
+
+\title{Manual of multiOmicsViz}
+\author{Jing Wang}
+\maketitle
+
+\section{Introduction}
+multiOmicsViz package can calculate the spearman correlation between the source omics data and other target omics data, identify the significant correlations and plot the significant correlations on the heat map in which the x-axis and y-axis are ordered by the chromosomal location.
+
+\section{Environment}
+multiOmicsViz requires R version 3.3 or later, which can be downloaded from the website \href{http://www.r-project.org/}{http://www.r-project.org/}.  multiOmicsViz package requires the following packages: parallel ($>$3.3.2), doParallel ($>$1.0.10) and foreach ($>$1.4.0), which can be installed as follows.
+
+$>$install.packages("parallel")
+
+$>$install.packages("doParallel")
+
+$>$install.packages("foreach")
+
+\section{multiOmicsViz}
+After building up the basic environment mentioned above, the users can install the multiOmicsViz package and use it to analyze networks.
+
+<<Example>>=
+library("multiOmicsViz")
+sourceOmics <- system.file("extdata","sourceOmics.txt",package="multiOmicsViz")
+sourceOmics <- read.table(sourceOmics,header=TRUE,sep="\t",stringsAsFactors=FALSE,check.names=FALSE)
+	
+targetOmics1 <- system.file("extdata","targetOmics.txt",package="multiOmicsViz")
+targetOmics1 <- read.table(targetOmics1,header=TRUE,sep="\t",stringsAsFactors=FALSE,check.names=FALSE)
+	
+targetOmicsList <- list()
+targetOmicsList[[1]] <- targetOmics1
+	
+outputfile <- paste(getwd(),"/heatmap",sep="")
+multiOmicsViz(sourceOmics,"CNA","20",targetOmicsList,"mRNA","All",0.001,outputfile)
+@
+
+\subsection{Input}
+This section describes the arguments of the multiOmicsViz function:
+
+      1. \emph{sourceOmics}: A R matrix or data.frame object containing the omics data.
+	
+      2. \emph{sourceOmicsName}: The name of the source omics data (e.g. CNA).
+
+      3. \emph{chrome_sourceOmics}: The \emph{multiOmicsViz} function will extract the genes in the selected chromosome(s) from genes in the source omics data and then identify and visualize the significant correlations based on the selected genes. \emph{chrome_sourceOmics} can be one character containing the chromosome name (e.g. "1"), a R vector object containing multiple chromosomes (e.g. c("1","2","3")) or "All" representing all 24 chromosomes.
+     
+      4. \emph{targetOmicsList}: An R list object containing at most 3 target omics data. 
+      
+      5. \emph{targetOmicsName}:  A R vector object containing the name of all target omics data stored in the \emph{targetOmicsList}.
+    
+      6. \emph{chrome_targetOmics}: The \emph{multiOmicsViz} function will extract the genes in the selected chromosome(s) from the overlapping genes among all target omics data and then identify and visualize the significant correlations based on the selected genes. \emph{chrome_sourceOmics} can be one character containing the chromosome name (e.g. "1"), a R vector object containing multiple chromosomes (e.g. c("1","2","3")) or "All" representing all 24 chromosomes.
+      
+      7. \emph{fdrThr}: The FDR threshold for identifying the significant correlations.
+      
+      8. \emph{outputfile}: The output file name.
+      
+      9. \emph{nThreads}: If \emph{targetOmicsList} contains 2 or 3 omics data, multiOmicsViz will use the parallel computing method to calculate the significant correlations between the source omics data and each of target omics data. \emph{nThreads} is the number of cores used for the parallel computing.
+	
+      10.  \emph{legend}: If \emph{legend} is TRUE, the output heat map will contain the legend.
+
+\subsection{Output}
+If the \emph{targetOmicsList} contains one target omics data, the \emph{multiOmicsViz} function will plot a heat map in which x-axis represents the genes in the source omics data, y-axis represents the genes in the target omics data, x-axis and y-axis are  ordered by chromosomal location, each point represents a significant correlation, red color represents the significant positive correlation and blue color represents the significant negative correlation. If the \emph{targetOmicsList} contains multiple target omics data, the \emph{multiOmicsViz} function will not only plot multiple heat maps for each target omics data but also plot mutliple bar charts in which blue bars represent the number of specific significant correlations for the target omics data and black bars represents the number of common significant correlations among all target omics data.
+
+The following figure is one example to use heat maps to compare the effect of CNA (copy number alteration) on mRNA and protein abundance.
+
+\includegraphics[scale=0.1]{example.png}
+
+
+\section{calculateCorForTwoMatrices}
+The calculateCorForTwoMatrices function can Identify the significant correlations between two matrices.
+
+<<Example>>=
+
+library("multiOmicsViz")
+matrix1 <- system.file("extdata","sourceOmics.txt",package="multiOmicsViz")
+matrix1 <- read.table(matrix1,header=TRUE,sep="\t",stringsAsFactors=FALSE,check.names=FALSE)
+	
+matrix2 <- system.file("extdata","targetOmics.txt",package="multiOmicsViz")
+matrix2 <- read.table(matrix2,header=TRUE,sep="\t",stringsAsFactors=FALSE,check.names=FALSE)
+	
+sig <- calculateCorForTwoMatrices(matrix1=matrix1,matrix2=matrix2,fdr=0.01)
+@
+
+
+\subsection{Input}
+	1. \emph{matrix1}: A R matrix or data.frame object containing the numeric values.
+	
+	2. \emph{matrix2}: A R matrix or data.frame object containing the numeric values.
+	
+	3. \emph{fdr}: The FDR threshold for identifying significant correlations.
+	
+\subsection{Output}
+This function will return a R matrix object containing significant correlations. "1" represents the significant positive correlation, "-1" represents the significant negative correlation and "0" represents no significant correlation.
+
+\end{document}
