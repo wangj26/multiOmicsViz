@@ -46,13 +46,10 @@ pdfborder=0 0 0 }
 multiOmicsViz package can calculate the spearman correlation between the source omics data and other target omics data, identify the significant correlations and plot the significant correlations on the heat map in which the x-axis and y-axis are ordered by the chromosomal location.
 
 \section{Environment}
-multiOmicsViz requires R version 3.3 or later, which can be downloaded from the website \href{http://www.r-project.org/}{http://www.r-project.org/}.  multiOmicsViz package requires the following packages: parallel ($>$3.3.2), doParallel ($>$1.0.10) and foreach ($>$1.4.0), which can be installed as follows.
+multiOmicsViz requires R version 3.3 or later, which can be downloaded from the website \href{http://www.r-project.org/}{http://www.r-project.org/}.  multiOmicsViz package can be installed as follows.
 
-$>$install.packages("parallel")
-
-$>$install.packages("doParallel")
-
-$>$install.packages("foreach")
+source("http://bioconductor.org/biocLite.R")
+install.package("multiOmicsViz",dependencies=TRUE)
 
 \section{multiOmicsViz}
 After building up the basic environment mentioned above, the users can install the multiOmicsViz package and use it to analyze networks.
@@ -68,20 +65,20 @@ targetOmics1 <- read.table(targetOmics1,header=TRUE,sep="\t",stringsAsFactors=FA
 targetOmicsList <- list()
 targetOmicsList[[1]] <- targetOmics1
 	
-outputfile <- paste(getwd(),"/heatmap",sep="")
+outputfile <- paste(tempdir(),"/heatmap",sep="")
 multiOmicsViz(sourceOmics,"CNA","20",targetOmicsList,"mRNA","All",0.001,outputfile)
 @
 
 \subsection{Input}
 This section describes the arguments of the multiOmicsViz function:
 
-      1. \emph{sourceOmics}: A R matrix or data.frame object containing the omics data.
+      1. \emph{sourceOmics}: A R matrix, data.frame or SummarizedExperiment object containing the omics data. The data should contain the row names representing the genes and column names representing the samples.
 	
       2. \emph{sourceOmicsName}: The name of the source omics data (e.g. CNA).
 
       3. \emph{chrome_sourceOmics}: The \emph{multiOmicsViz} function will extract the genes in the selected chromosome(s) from genes in the source omics data and then identify and visualize the significant correlations based on the selected genes. \emph{chrome_sourceOmics} can be one character containing the chromosome name (e.g. "1"), a R vector object containing multiple chromosomes (e.g. c("1","2","3")) or "All" representing all 24 chromosomes.
      
-      4. \emph{targetOmicsList}: An R list object containing at most 3 target omics data. 
+      4. \emph{targetOmicsList}: A R list object containing at most 3 target omics data. Each omics data in the list should be a R matrix, data.frame or SummarizedExperiment object and contain the row names representing the genes and column names representing the samples. There should have multiple overlapping genes among all target omics data and at least 6 overlapping sample between source omics data and each target omics data.
       
       5. \emph{targetOmicsName}:  A R vector object containing the name of all target omics data stored in the \emph{targetOmicsList}.
     
@@ -120,11 +117,9 @@ sig <- calculateCorForTwoMatrices(matrix1=matrix1,matrix2=matrix2,fdr=0.01)
 
 
 \subsection{Input}
-	1. \emph{matrix1}: A R matrix or data.frame object containing the numeric values.
+	1. \emph{matrix1} and \emph{matrix2}: A R matrix, data.frame or SummarizedExperiment object containing the numeric values. \emph{matrix2} should have at least 6 overlapping samples with \emph{matrix1}.
 	
-	2. \emph{matrix2}: A R matrix or data.frame object containing the numeric values.
-	
-	3. \emph{fdr}: The FDR threshold for identifying significant correlations.
+	2. \emph{fdr}: The FDR threshold for identifying significant correlations.
 	
 \subsection{Output}
 This function will return a R matrix object containing significant correlations. "1" represents the significant positive correlation, "-1" represents the significant negative correlation and "0" represents no significant correlation.
