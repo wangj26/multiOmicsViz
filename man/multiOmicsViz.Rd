@@ -19,7 +19,9 @@ targetOmicsName,chrome_targetOmics,fdrThr,outputfile,nThreads=NULL,legend=TRUE)
 
 \arguments{
   \item{sourceOmics}{
-	A R matrix or data.frame object containing the omics data.
+	A R matrix, data.frame or SummarizedExperiment object containing the omics data.
+	The data should contain the row names representing the genes and column names 
+	representing the samples.
   }
   \item{sourceOmicsName}{
 	The name of the source omics data (e.g. CNA).
@@ -33,7 +35,12 @@ targetOmicsName,chrome_targetOmics,fdrThr,outputfile,nThreads=NULL,legend=TRUE)
 	24 chromosomes.
   }
   \item{targetOmicsList}{
-	An R list object containing at most 3 target omics data. 
+	A R list object containing at most 3 target omics data. 
+	Each omics data in the list should be a R matrix, data.frame or SummarizedExperiment 
+	object and contain the row names representing the genes and column names 
+	representing the samples. There should have multiple overlapping genes among all target 
+	omics data and at least 6 overlapping sample between source omics data and each target 
+	omics data.
   }
   \item{targetOmicsName}{
   A R vector object containing the name of all target omics data stored in 
@@ -76,7 +83,6 @@ targetOmicsName,chrome_targetOmics,fdrThr,outputfile,nThreads=NULL,legend=TRUE)
 	omics data but also plot mutliple bar charts in which blue bars represent the number 
 	of specific significant correlations for the target omics data and black bars 
 	represents the number of common significant correlations among all target omics data.
-	
 }
 
 \author{
@@ -95,7 +101,7 @@ targetOmicsName,chrome_targetOmics,fdrThr,outputfile,nThreads=NULL,legend=TRUE)
 	targetOmicsList <- list()
 	targetOmicsList[[1]] <- targetOmics1
 	
-	outputfile <- paste(getwd(),"/heatmap",sep="")
+	outputfile <- paste(tempdir(),"/heatmap",sep="")
 	multiOmicsViz(sourceOmics,"CNA","20",targetOmicsList,
 "mRNA","All",0.001,outputfile)
 }

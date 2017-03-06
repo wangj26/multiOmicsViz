@@ -15,8 +15,6 @@
 	\tabular{ll}{
 		Package: \tab multiOmicsViz\cr
 		Type: \tab Package\cr
-		Version: \tab 0.99.0\cr
-		Date: \tab 2017-03-03\cr
 		License: \tab LGPL\cr
 		LazyLoad: \tab yes\cr
 	}

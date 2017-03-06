@@ -16,10 +16,13 @@ calculateCorForTwoMatrices(matrix1,matrix2,fdr)
 
 \arguments{
   \item{matrix1}{
-		A R matrix or data.frame object containing the numeric values.
+ 	A R matrix, data.frame or SummarizedExperiment object containing 
+	the numeric values.
   }
   \item{matrix2}{
-  	A R matrix or data.frame object containing the numeric values.
+ 	A R matrix, data.frame or SummarizedExperiment object containing 
+	the numeric values. \code{matrix2} should have at least 6 overlapping
+	samples with \code{matrix1}.
   }
   \item{fdr}{
   	The FDR threshold for identifying significant correlations.
