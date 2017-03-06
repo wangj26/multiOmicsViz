@@ -1,14 +1,14 @@
 Package: multiOmicsViz
 Type: Package
 Title: Plot the effect of one omics data on other omics data along the chromosome
-Version: 0.99.1
-Date: 2017-03-03
+Version: 0.99.2
+Date: 2017-03-06
 Author: Jing Wang <jingwang.uestc@gmail.com>
 Maintainer: Jing Wang <jingwang.uestc@gmail.com>
 Description: Calculate the spearman correlation between the source omics data and other target omics data, identify the significant correlations and plot the significant correlations on the heat map in which the x-axis and y-axis are ordered by the chromosomal location.
 License: LGPL
 LazyLoad: yes
-Depends: R (>= 3.3.2)
+Depends: R (>= 3.4)
 Imports: methods, parallel, doParallel, foreach, grDevices, graphics, utils, SummarizedExperiment, stats
 Suggests: BiocGenerics
 Collate:
