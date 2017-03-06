@@ -1,5 +1,6 @@
-import(methods, parallel, doParallel, foreach)
+import(methods, parallel, doParallel, foreach, grDevices, graphics, utils, stats)
 importFrom("grDevices", "dev.off", "png")
+importFrom("SummarizedExperiment","SummarizedExperiment","assays")
 importFrom("graphics", "abline", "axis", "layout", "par", "plot","points")
 importFrom("stats", "cor", "p.adjust", "pt")
 importFrom("utils", "read.table")
