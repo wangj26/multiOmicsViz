@@ -23,8 +23,8 @@ nThreads=NULL,legend=TRUE){
       should be saved in the list object.")
     }
     
-    if(length(targetOmicsList)>3){
-      stop("targetOmicsList can only contain at most three omics data.")
+    if(length(targetOmicsList)>5){
+      stop("targetOmicsList can only contain at most five omics data.")
     }
     
     for(i in seq_len(length(targetOmicsList))){
