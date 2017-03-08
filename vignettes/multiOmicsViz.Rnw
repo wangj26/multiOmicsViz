@@ -78,7 +78,7 @@ This section describes the arguments of the multiOmicsViz function:
 
       3. \emph{chrome_sourceOmics}: The \emph{multiOmicsViz} function will extract the genes in the selected chromosome(s) from genes in the source omics data and then identify and visualize the significant correlations based on the selected genes. \emph{chrome_sourceOmics} can be one character containing the chromosome name (e.g. "1"), a R vector object containing multiple chromosomes (e.g. c("1","2","3")) or "All" representing all 24 chromosomes.
      
-      4. \emph{targetOmicsList}: A R list object containing at most 3 target omics data. Each omics data in the list should be a R matrix, data.frame or SummarizedExperiment object and contain the row names representing the genes and column names representing the samples. There should have multiple overlapping genes among all target omics data and at least 6 overlapping sample between source omics data and each target omics data.
+      4. \emph{targetOmicsList}: A R list object containing at most 5 target omics data. Each omics data in the list should be a R matrix, data.frame or SummarizedExperiment object and contain the row names representing the genes and column names representing the samples. There should have multiple overlapping genes among all target omics data and at least 6 overlapping sample between source omics data and each target omics data.
       
       5. \emph{targetOmicsName}:  A R vector object containing the name of all target omics data stored in the \emph{targetOmicsList}.
     
