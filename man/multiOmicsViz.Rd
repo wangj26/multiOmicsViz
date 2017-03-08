@@ -35,7 +35,7 @@ targetOmicsName,chrome_targetOmics,fdrThr,outputfile,nThreads=NULL,legend=TRUE)
 	24 chromosomes.
   }
   \item{targetOmicsList}{
-	A R list object containing at most 3 target omics data. 
+	A R list object containing at most 5 target omics data. 
 	Each omics data in the list should be a R matrix, data.frame or SummarizedExperiment 
 	object and contain the row names representing the genes and column names 
 	representing the samples. There should have multiple overlapping genes among all target 
